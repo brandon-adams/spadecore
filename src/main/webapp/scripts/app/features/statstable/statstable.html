@@ -1,0 +1,223 @@
+<div ng-cloak style="background-color: #f1f7f9;"></div>
+<!-- <md-toolbar md-scroll-shrink layout-row style="background-color:gray;">
+    <div class="md-toolbar-tools" flex flex-order="1">
+      <h3>
+        <span>Provisioning - Project List</span>
+      </h3>
+       <div flex flex-order="3" align="left">
+    [flex-order="3"]
+  </div>
+    </div>
+   
+  </md-toolbar> -->
+<nav class="navbar navbar-default navbar-transparent" style="background-color:#e0e0e0;margin-bottom: 0px !important;height:auto">
+  <div class="container-fluid">
+    
+    <div class="navbar-header">
+      <div class="navbar-brand" style="font-family: 'Roboto', sans-serif; font-weight:300;  color:black;">Demo Project - Resource View</div>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" align="right" style="float:right;margin-right:2.7%;">
+      <ul class="nav navbar-nav">
+      <li class="dropdown">
+          <a href="" class="dropdown-toggle md-accent" data-toggle="dropdown" role="button" aria-expanded="false" style="font-family: 'Roboto', sans-serif; font-weight: 300; color: black;">Project: Demo <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li ng-repeat="project in user.projects" ng-click="switchProject(project)"><a ui-sref="statstable">{{project}}</a></li>
+          </ul>
+        </li>
+      <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="font-family: 'Roboto', sans-serif; font-weight: 300; color: black;">Switch View <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a ui-sref="statstable">Table View</a></li>
+            <li><a ui-sref="stats">Resource View</a></li>
+          </ul>
+        </li>
+      <li role="button" ng-click="statsTableInfo()"><ng-md-icon icon="info_outline" style="display:block;margin-top:12px;fill:black" size="25"></ng-md-icon></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div>
+<div style="font-family: 'Roboto', sans-serif;" id="outer" >
+	<md-card id="buttons" layout="row" >
+		<md-button class="md-raised md-primary" style="padding:5px 20px 5px 20px;" ng-click="create()">Create</md-button>
+		<div class="gap"></div>
+		<md-button class="md-raised md-warn" style="padding:5px 20px 5px 20px;" ng-click="confirmDel($event, selectedPod)">Delete</md-button>
+		<div class="gap"></div>
+<!-- 		<md-button class="md-raised md-primary" style="padding:5px 20px 5px 20px;" ng-click="scale($event, selectedPod)">Scale</md-button> -->
+	</md-card>
+	
+    <md-card id="main" class="md-whiteframe-z2" flex>
+    <table ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
+	<thead>
+	<tr>
+		<th ng-repeat="header in headers" style="text-align:left;">{{header}}</th>
+	</tr>
+	<tr>
+		
+	</tr>
+	
+	</thead>
+	<tbody>
+	<tr ng-repeat="pod in pods"
+		ng-click="pod.$selected = !pod.$selected; changeSelection(pod)"
+		ng-class="{'st-selected': pod.$selected}">
+		<td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
+			{{pod.labels.name}}
+		</td>
+		<td data-title="'Id'" sortable="'id'" filter="{ 'id': 'text' }">
+			{{pod.id}}
+		</td>
+		<td data-title="'Project'" sortable="'project'" filter="{ 'project': 'text' }">
+			{{pod.labels.project}}
+		</td>
+		<td data-title="'Stack'" sortable="'stack'" filter="{ 'stac': 'text' }">
+			{{pod.labels.stack}}
+		</td>
+		<td ng-repeat="container in pod.desiredState.manifest.containers">
+			{{container.name}}
+		</td>
+    	<td data-title="'Host'" sortable="'host'" filter="{ 'host': 'text' }">
+			{{pod.currentState.host}}
+		</td>
+		<td ng-repeat="container in pod.desiredState.manifest.containers">
+			<div ng-repeat="port in container.ports">{{pod.currentState.host}}:{{port.hostPort}}</div></td>
+		<td>
+<!-- 		pod.currentState.status|switch:{'Running:'status-running','Pending:'status-pending','Failed:'status-failed' -->
+			<ng-md-icon icon="brightness_1"
+			 style="fill:{{statusColors[pod.currentState.status]}}" size="24" >
+				<md-tooltip>{{pod.currentState.status}}</md-tooltip>
+			</ng-md-icon></td>
+	</tr>
+	</tbody>
+	<tfoot>
+	
+	</tfoot>
+</table>
+
+    </md-card>
+<!--     <md-card> -->
+<!--         <div ng-controller="TableCtrl" class="row-fluid span12"> -->
+<!--         START $scope.[model] updates -->
+<!--         <div class="span12 well well-small"> -->
+<!--             <div class="span5"> -->
+<!--                 <p class="nav-header">collapse/expand tableRow</p> -->
+<!--                 <p class="small-caps">tableRowExpanded: <b>{{tableRowExpanded}}</b> -->
+
+<!--                 </p> -->
+<!--                 <p class="small-caps">tableRowIndexCurrExpanded: <b>{{tableRowIndexCurrExpanded}}</b> -->
+
+<!--                 </p> -->
+<!--                 <p class="small-caps">storeIdExpanded: <b>{{storeIdExpanded}}</b> -->
+
+<!--                 </p> -->
+<!--             </div> -->
+<!--             <div class="span7"> -->
+<!--                 <p class="nav-header">dayDataCollapse</p>{{dayDataCollapse}}</div> -->
+<!--         </div> -->
+<!--         END $scope.[model] updates -->
+<!--         START TABLE -->
+<!--         <div> -->
+<!--             <table class="table table-hover table-condensed table-striped"> -->
+<!--                 <thead> -->
+<!--                     <tr> -->
+<!--                         <th>Store ID</th> -->
+<!--                         <th>Name</th> -->
+<!--                         <th>Address</th> -->
+<!--                         <th>City</th> -->
+<!--                         <th>Cost</th> -->
+<!--                         <th>Sales</th> -->
+<!--                         <th>Revenue</th> -->
+<!--                         <th>Employees</th> -->
+<!--                         <th>Employees H-sum</th> -->
+<!--                     </tr> -->
+<!--                 </thead> -->
+<!--                 <tbody data-ng-repeat="storedata in storeDataModel.storedata"> -->
+<!--                     <tr id="storedata.store.storeId" class="clickableRow" title="Click to toggle collapse/expand day summaries for this store." data-ng-click="selectTableRow($index, storedata.store.storeId)"> -->
+<!--                         <td>{{storedata.store.storeId}}</td> -->
+<!--                         <td>{{storedata.store.storeName}}</td> -->
+<!--                         <td>{{storedata.store.storeAddress}}</td> -->
+<!--                         <td>{{storedata.store.storeCity}}</td> -->
+<!--                         <td>{{storedata.data.costTotal}}</td> -->
+<!--                         <td>{{storedata.data.salesTotal}}</td> -->
+<!--                         <td>{{storedata.data.revenueTotal}}</td> -->
+<!--                         <td>{{storedata.data.averageEmployees}}</td> -->
+<!--                         <td>{{storedata.data.averageEmployeesHours}}</td> -->
+<!--                     </tr> -->
+<!--                     <tr data-ng-show="!dayDataCollapse[$index]"> -->
+<!--                         <td colspan="2">&nbsp;</td> -->
+<!--                         <td colspan="7"> -->
+<!--                             <div> -->
+<!--                                 <div class="pull-right"> -->
+<!--                                     <table class="table table-hover table-condensed table-striped"> -->
+<!--                                         <thead> -->
+<!--                                             <tr> -->
+<!--                                                 <th></th> -->
+<!--                                                 <th>Date [YYYY-MM-dd]</th> -->
+<!--                                                 <th>Cost</th> -->
+<!--                                                 <th>Sales</th> -->
+<!--                                                 <th>Revenue</th> -->
+<!--                                                 <th>Employees</th> -->
+<!--                                                 <th>Employees H-sum</th> -->
+<!--                                             </tr> -->
+<!--                                         </thead> -->
+<!--                                         <tbody data-ng-repeat="dayData in storedata.data.dayData"> -->
+<!--                                             <tr> -->
+<!--                                                 <td class="pullright"> -->
+<!--                                                     <button type="btn btn-small" title="Click to show transactions for this specific day..." data-ng-click="dayData.showTransactions=!dayData.showTransactions"><i class="icon-list"></i> -->
+
+<!--                                                     </button> -->
+<!--                                                 </td> -->
+<!--                                                 <td>{{dayData.date}}</td> -->
+<!--                                                 <td>{{dayData.cost}}</td> -->
+<!--                                                 <td>{{dayData.sales}}</td> -->
+<!--                                                 <td>{{dayData.revenue}}</td> -->
+<!--                                                 <td>{{dayData.employees}}</td> -->
+<!--                                                 <td>{{dayData.employeesHoursSum}}</td> -->
+<!--                                             </tr> -->
+<!--                                             <tr data-ng-show="dayData.showTransactions"> -->
+<!--                                                 <td>&nbsp;</td> -->
+<!--                                                 <td colspan="6"> -->
+<!--                                                     <div> -->
+<!--                                                         <div> -->
+<!--                                                             <table class="table table-hover table-condensed table-striped"> -->
+<!--                                                                 <thead> -->
+<!--                                                                     <tr> -->
+<!--                                                                         <th></th> -->
+<!--                                                                         <th>Transaction</th> -->
+<!--                                                                         <th>Sale</th> -->
+<!--                                                                         <th>Cost</th> -->
+<!--                                                                         <th>Revenue</th> -->
+<!--                                                                         <th>Employee</th> -->
+<!--                                                                     </tr> -->
+<!--                                                                 </thead> -->
+<!--                                                                 <tbody> -->
+<!--                                                                     <tr data-ng-repeat="transaction in dayData.transactions"> -->
+<!--                                                                         <td>&nbsp;</td> -->
+<!--                                                                         <td>{{transaction.transaction}}</td> -->
+<!--                                                                         <td>{{transaction.sale}}</td> -->
+<!--                                                                         <td>{{transaction.cost}}</td> -->
+<!--                                                                         <td>{{transaction.revenue}}</td> -->
+<!--                                                                         <td>{{transaction.employee}}</td> -->
+<!--                                                                     </tr> -->
+<!--                                                                 </tbody> -->
+<!--                                                             </table> -->
+<!--                                                         </div> -->
+<!--                                                     </div> -->
+<!--                                                 </td> -->
+<!--                                             </tr> -->
+<!--                                         </tbody> -->
+<!--                                     </table> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                         </td> -->
+<!--                     </tr> -->
+<!--                 </tbody> -->
+<!--             </table> -->
+<!--         </div> -->
+<!--         END TABLE -->
+<!--     </div> -->
+<!--     </md-card> -->
+</div>
+</div>

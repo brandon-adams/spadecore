@@ -1,0 +1,164 @@
+<nav class="navbar navbar-default navbar-transparent" style="background-color:#e0e0e0;margin-bottom: 0px !important;height:auto">
+  <div class="container-fluid">
+    
+    <div class="navbar-header">
+      <div class="navbar-brand" style="font-family: 'Roboto', sans-serif; font-weight:300;  color:black;">Demo Project - Stack Templates</div>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" align="right" style="float:right;margin-right:2.7%;">
+      <ul class="nav navbar-nav">
+      <li class="dropdown">
+          <a href="" class="dropdown-toggle md-accent" data-toggle="dropdown" role="button" aria-expanded="false" style="font-family: 'Roboto', sans-serif; font-weight: 300; color: black;">Project: Demo <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a ui-sref="home">Radv</a></li>
+          </ul>
+        </li>
+      <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="font-family: 'Roboto', sans-serif; font-weight: 300; color: black;">
+          Switch View <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="" ng-click="gridView = true">Table View</a></li>
+            <li><a href="" ng-click="gridView = false">Template View</a></li>
+          </ul>
+        </li>
+      <li role="button" ng-click="templatesInfo()"><ng-md-icon icon="info_outline" style="display:block;margin-top:12px;fill:black" size="25"></ng-md-icon></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div layout="row" layout-md="column" layout-wrap flex class="md-content"
+	style="padding-left: 5%;">
+	<md-card ng-repeat="item in plates" class="un-25" flex="20" style="background-color:white; border-radius:12px;" ng-show="!gridView"> 
+		<md-card-content flex style="padding: 0px"> 
+			<md-toolbar class="md-primary" style="text-align:center;font-family: 'Roboto', sans-serif; font-weight:300;  color:white;border-top-left-radius:10px;border-top-right-radius:10px;padding-top: 6%;">
+				<h4>{{item.id}}</h4>
+			</md-toolbar>
+					
+		<div ng-repeat="temp in item.templates" style="padding: 4%; padding-left:40px" flex>
+			<div layout="row" style="margin-top:2px">
+				<span style="margin-top:16px;padding-right:3px" ng-if="temp.app == 'apache' ">
+					<img alt="logo" src="assets/images/Apache.png" height="20px">
+				</span>
+				<span style="margin-top:16px;padding-right:3px" ng-if="temp.app == 'nginx' ">
+					<img alt="logo" src="assets/images/nginx.png" height="20px">
+				</span>
+				<span style="margin-top:16px;padding-right:3px" ng-if="temp.app == 'wildfly' ">
+					<img alt="logo" src="assets/images/wildfly.png" height="20px">
+				</span>
+				<span style="margin-top:16px;padding-right:3px" ng-if="temp.app == 'tomcat' ">
+					<img alt="logo" src="assets/images/Tomcat.png" height="20px">
+				</span>
+				<span style="margin-top:16px;padding-right:3px" ng-if="temp.app == 'mongodb' ">
+					<img alt="logo" src="assets/images/mongo2.png" height="20px">
+				</span>
+				<span style="margin-top:16px;padding-right:3px" ng-if="temp.app == 'mysql' ">
+					<img alt="logo" src="assets/images/mysql.png" height="20px">
+				</span>
+				
+				<div layout="column">
+					<h3 style="margin-top: 0px; margin-bottom: 0px;" >{{labelFormat[temp.label]}}</h3>
+					<span style="text-transform:capitalize">{{temp.app}}</span>
+				</div>
+			</div>
+		</div>
+	<div layout="row" layout-align="space-around center" flex>
+		<md-button class="md-primary"
+			style="font-family: 'Roboto', sans-serif;" ng-click="open2(item)">Edit</md-button>
+	</div>
+	</md-card-content> </md-card>
+	</div>
+
+	<div ng-show="gridView">
+	<md-card id="buttons" layout="row" >
+<!-- 		<md-button class="md-raised md-primary" style="padding:5px 20px 5px 20px;" ng-click="open2(selectedTemplate)">Create</md-button> -->
+<!-- 		<div class="gap"></div> -->
+		<md-button class="md-raised md-primary" style="padding:5px 20px 5px 20px;" ng-click="open2(selectedTemplate)">Edit</md-button>
+		<div class="gap"></div>
+<!-- 		ng-disabled="selectedPod.$selected===false" -->
+<!-- 		<md-button class="md-raised md-primary" style="padding:5px 20px 5px 20px;" ng-click="confirmDel($event, selectedPod)">Delete</md-button> -->
+	</md-card>
+	<md-card id="main" class="md-whiteframe-z2" flex>
+	    <table ng-table="tableParams" show-filter="true" class="table ng-table-rowselected">
+		<thead>
+		<tr>
+			<th ng-repeat="header in headers" style="text-align:left;">{{header}}</th>
+		</tr>
+		<tr>
+			
+		</tr>
+		
+		</thead>
+		<tbody>
+		<tr ng-repeat="template in templates2"
+			ng-click="template.$selected = !template.$selected; changeSelection(template)"
+			ng-class="{'st-selected': template.$selected}" style="text-align:left;">
+			<td data-title="'Id'" sortable="'id'" filter="{ 'id': 'text' }">
+				{{template.id}}
+			</td>
+			<td data-title="'Project'" sortable="'project'" filter="{ 'project': 'text' }">
+				{{template.project}}
+			</td>
+			<td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
+				{{template.templates[$index].name}}
+			</td>
+			<td ng-repeat="container in template.templates" ><div>OS: {{container.os}}</div><div>App: {{container.app}}</div><div>Replicas: {{container.replicas}}</div></td>
+			
+		</tr>
+		</tbody>
+		<tfoot>
+		</tfoot>
+	</table>
+</md-card>
+	
+	
+		<!-- <div>
+
+			<div id="outer">
+				<md-card id="buttons" layout="row"> <md-button
+					class="md-raised md-primary" style="padding:5px 20px 5px 20px;"
+					ng-click="create()">Create</md-button>
+				<div class="gap"></div>
+				<md-button class="md-raised md-noink"
+					style="padding:5px 20px 5px 20px;">Edit</md-button>
+				<div class="gap"></div>
+				<md-button class="md-raised md-warn"
+					style="padding:5px 20px 5px 20px;" ng-click="confirmDel($event)">Delete</md-button>
+				</md-card>
+				<md-card id="main" class="md-whiteframe-z2" flex>
+				<table st-table="displayedTemplates" st-safe-src="templates2"
+					class="table table-striped">
+					<thead>
+						<tr>
+							<th st-sort="header" ng-repeat="header in headers">{{header}}</th>
+						</tr>
+						<tr>
+							<th colspan="8"><input st-search
+								class="input-sm form-control" type="search"
+								placeholder="Filter..." /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr st-select-row="template" st-select-mode="multiple"
+							ng-repeat="template in displayedTemplates">
+							<td>{{template.id}}</td>
+							<td>{{template.project}}</td>
+							<td>{{template.templates[$index].name}}</td>
+							<td>{{template.templates[$index].os}}</td>
+							<td>{{template.templates[$index].app}}</td>
+							<td>{{template.templates[$index].replicas}}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="8" class="text-center">
+								<div st-pagination="" st-items-by-page="3"
+									st-displayed-pages="3"></div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				</md-card>
+			</div>
+		</div> -->
+	</div>

@@ -1,0 +1,178 @@
+<div layout="row">
+		<div class="navbar-default navbar-transparent"
+			style="background-color: #274973; width: 100%; color: white;"
+			layout="column" layout-align="">
+			<div layout="row">
+				<div class="navbar-header" align="left">
+					<a href="http://www.newwave.io"><img alt="NewWave Logo"
+						src="assets/images/newwave-logo-wave-long-white-1024x282.png"
+						height="60px"></a>
+				</div>
+				<div align="center" layout="row"
+					style="margin-right: auto; margin-left: auto">
+					<a ui-sref="home"><img alt="spade logo"
+						src="assets/images/SPADEIcon.png" height="60px"></a>
+					<h2 style="font-family: 'Roboto', sans-serif; font-weight: 700;">SPADE</h2>
+				</div>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1" align="right"
+					style="float: right; margin-top: 10px;">
+					<ul class="nav navbar-nav" ng-controller="LogoutCtrl"
+						ng-show="isAuthenticated()">
+
+						<li class="dropdown"><a href="" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-expanded="false"
+							style="font-family: 'Roboto', sans-serif; font-weight: 300; color: white;">
+								<div layout="row">
+									<ng-md-icon icon="person" style="fill:white" size="20"></ng-md-icon>
+									<div style="display: block; margin-top: 2px;">Account</div>
+									<span style="display: block; margin-top: 11px;" class="caret"></span>
+								</div>
+						</a>
+							<ul class="dropdown-menu" role="menu">
+								<li ng-controller="LogoutController"><a ng-click="logout()"
+									href="">Logout</a></li>
+							</ul></li>
+						<li><a ui-sref="home"><div layout="row">
+									<ng-md-icon icon="home" style="fill:white" size="20"></ng-md-icon>
+									<div role="button" aria-expanded="false"
+										style="font-family: 'Roboto', sans-serif; font-weight: 300; color: white; display: block; margin-left: 4% margin-top:2px;">Home</div>
+								</div></a></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><span translate="global.title">jhipster</span> <span class="navbar-version">v{{VERSION}}</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
+            <ul class="nav navbar-nav nav-pills navbar-right">
+                <li ui-sref-active="active">
+                    <a ui-sref="home">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span translate="global.menu.home">Home</span>
+                    </a>
+                </li>
+                <li ui-sref-active="active" ng-switch-when="true" class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-th-list"></span>
+                                    <span class="hidden-tablet" translate="global.menu.entities.main">
+                                        Entities
+                                    </span>
+                                    <b class="caret"></b>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- JHipster will add entities to the menu here -->
+                    </ul>
+                </li>
+                <li ng-class="{active: $state.includes('account')}" class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="hidden-tablet" translate="global.menu.account.main">
+                                        Account
+                                    </span>
+                                    <b class="caret"></b>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="settings"><span class="glyphicon glyphicon-wrench"></span>
+                            &#xA0;<span translate="global.menu.account.settings">Settings</span></a></li>
+                        <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="password"><span class="glyphicon glyphicon-lock"></span>
+                            &#xA0;<span translate="global.menu.account.password">Password</span></a></li>
+                        <li ui-sref-active="active" ng-switch-when="true"><a ui-sref="sessions"><span class="glyphicon glyphicon-cloud"></span>
+                            &#xA0;<span translate="global.menu.account.sessions">Sessions</span></a></li>
+                        <li ui-sref-active="active" ng-switch-when="true"><a href="" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>
+                            &#xA0;<span translate="global.menu.account.logout">Log out</span></a></li>
+                        <li ui-sref-active="active" ng-switch-when="false"><a ui-sref="login"><span class="glyphicon glyphicon-log-in"></span>
+                            &#xA0;<span translate="global.menu.account.login">Authenticate</span></a></li>
+
+                        <li ui-sref-active="active" ng-switch-when="false"><a ui-sref="register"><span class="glyphicon glyphicon-plus-sign"></span>
+                            &#xA0;<span translate="global.menu.account.register">Register</span></a></li>
+                    </ul>
+                </li>
+                <li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" ng-show="isInRole('ROLE_ADMIN')" class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-tower"></span>
+                                    <span class="hidden-tablet" translate="global.menu.admin.main">Admin</span>
+                                    <b class="caret"></b>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ui-sref-active="active"><a ui-sref="metrics"><span class="glyphicon glyphicon-dashboard"></span>
+                            &#xA0;<span translate="global.menu.admin.metrics">Metrics</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="health"><span class="glyphicon glyphicon-heart"></span>
+                            &#xA0;<span translate="global.menu.admin.health">Health</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="configuration"><span class="glyphicon glyphicon-list-alt"></span>
+                            &#xA0;<span translate="global.menu.admin.configuration">Configuration</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="audits"><span class="glyphicon glyphicon-bell"></span>
+                            &#xA0;<span translate="global.menu.admin.audits">Audits</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="logs"><span class="glyphicon glyphicon-tasks"></span>
+                            &#xA0;<span translate="global.menu.admin.logs">Logs</span></a></li>
+                        <li ui-sref-active="active"><a ui-sref="docs"><span class="glyphicon glyphicon-book"></span>
+                            &#xA0;<span translate="global.menu.admin.apidocs">API Docs</span></a></li>
+                    </ul>
+                </li>
+                <li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-flag"></span>
+                                    <span class="hidden-tablet" translate="global.menu.language">Language</span>
+                                    <b class="caret"></b>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li active-menu="{{language}}" ng-repeat="language in languages">
+                            <a href="" ng-click="changeLanguage(language)">{{'language.' + language| translate}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <md-sidenav ng-show="isAuthenticated()" class="md-sidenav-left md-whiteframe-z2" 
+    	md-component-id="left" md-is-locked-open="$media('gt-sm')" ng-cloak="" 
+    	style="width: 260px;min-width: 260px;height:auto !important;background-color: #e0e0e0;">
+	  <accordion close-others="true">
+	    <accordion-group data-toggle="collapse" is-disabled="true">
+	      <accordion-heading><span><img src="assets/images/appbar.home.png" height="34px"></span>
+	      					<a ui-sref="home"><span style="font-family: 'Roboto', sans-serif;font-weight:500;color: black;">Home</span></a>
+	      </accordion-heading>
+	    </accordion-group>
+	    <accordion-group is-disabled="status.isFirstDisabled">
+	    <accordion-heading><span><img src="assets/images/appbar.database.png" height="34px"><a href=""><span style="font-family: 'Roboto', sans-serif;font-weight:500;color: black;">Provisioning</span></a></accordion-heading>
+	      <ul>
+	        <li><a ng-click="app.open()" href="#"><span style="font-family: 'Roboto', sans-serif;font-weight:300;">Launch Stack</span></a></li>
+	        <li><a ng-click="templates()" href="#"><span style="font-family: 'Roboto', sans-serif;font-weight:300;">Templates</span></a></li>
+<!-- 	        <li><a ng-click="logout()" href="#"><span style="font-family: 'Roboto', sans-serif;font-weight:300;">Logout</span></a></li> -->
+	      </ul>
+	    </accordion-group>
+	    <accordion-group>
+	    <accordion-heading><span><img src="assets/images/appbar.graph.line.png" height="34px"><a href=""><span style="font-family: 'Roboto', sans-serif;font-weight:500;color: black;">Metrics</span></a></accordion-heading>
+	      <ul>
+	        <li><a ui-sref="devops"><span style="font-family: 'Roboto', sans-serif;font-weight:300;">DevOps Dashboard</span></li>
+	        <li><a ui-sref="stats"><span style="font-family: 'Roboto', sans-serif;font-weight:300;">Infrastructure Dashboard</span></a></li>
+	        <!-- <li>Performance Dashboard</li>
+	        <li><a href="#">SOC Dashboard (Security Operations Center)</a></li>
+	        <li>NOC Dashboard (Network Operations Dashboard)</li>
+	        <li>Project Management Dashboard</li> -->
+	      </ul>
+	    </accordion-group>
+	  </accordion>
+	</md-sidenav>
+</nav>
+
